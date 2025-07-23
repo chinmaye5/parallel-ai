@@ -162,11 +162,8 @@ const LandingPage = () => {
   ];
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 text-gray-100 overflow-x-hidden">
-      {/* Enhanced Background with Particle Animation */}
       <div className="fixed inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900"></div>
-
-        {/* Enhanced Grid Pattern with Animation */}
         <div className="absolute inset-0 opacity-10">
           <div
             className="absolute inset-0"
@@ -182,7 +179,6 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Navigation with Glass Morphism */}
       <nav className="relative z-50 px-6 py-4 backdrop-blur-md bg-gray-900/50 border-b border-gray-800/50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2 group">
@@ -228,7 +224,6 @@ const LandingPage = () => {
         </div>
       </nav>
 
-      {/* Hero Section with Enhanced Effects */}
       <section className="relative z-10 px-6 py-32 md:py-40">
         <div className="max-w-7xl mx-auto text-center">
           <div className="mb-12" style={{ transform: `translateY(${scrollY * 0.1}px)` }}>
@@ -269,7 +264,6 @@ const LandingPage = () => {
             </button>
           </div>
 
-          {/* Enhanced Floating AI Models */}
           <div className="relative">
             <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
               {models.map((model, index) => (
@@ -278,13 +272,12 @@ const LandingPage = () => {
                   className={`group relative bg-gradient-to-br from-gray-800/40 to-gray-900/40 backdrop-blur-sm border border-gray-700/30 rounded-3xl p-8 hover:scale-105 transition-all duration-700 text-center overflow-hidden`}
                 >
                   <div className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${model.color} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-500`}>
-                    {/* Replace the text with an image */}
+
                     <img
                       src={model.logo}
                       alt={`${model.name} logo`}
                       className="w-12 h-12 object-contain"
                       onError={(e) => {
-                        // Fallback to initial letter if image fails to load
                         const target = e.target as HTMLImageElement;
                         target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50%" y="50%" font-size="60" text-anchor="middle" dominant-baseline="middle" fill="white">' +
                           model.name.charAt(0) + '</text></svg>';
@@ -302,8 +295,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-
-      {/* Features Section with Enhanced Cards */}
       <section id="features" ref={featuresRef} className="relative z-10 px-6 py-28">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -340,7 +331,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      {/* Enhanced Testimonials */}
       <section id="testimonials" ref={testimonialsRef} className="relative z-10 px-6 py-28">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -389,8 +379,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Enhanced CTA Section */}
       <section className="relative z-10 px-6 py-28">
         <div className="max-w-5xl mx-auto text-center">
           <div className="relative bg-gradient-to-br from-blue-900/30 to-purple-900/30 backdrop-blur-sm border border-blue-500/30 rounded-3xl p-12 overflow-hidden">
@@ -419,7 +407,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Enhanced Footer */}
       <footer className="relative z-10 px-6 py-20 border-t border-gray-800/50 bg-gradient-to-b from-gray-900/50 to-gray-950">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-12 mb-16">
@@ -496,7 +483,6 @@ const LandingPage = () => {
         </div>
       </footer>
 
-      {/* Global Animations */}
       <style jsx global>{`
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0deg); }
