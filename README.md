@@ -10,7 +10,6 @@ Built with **Next.js** (frontend) and **Node.js + Express + MongoDB** (backend).
 parallel-ai/
 ├── backend/ → Node.js + Express + MongoDB backend
 ├── frontend/ → Next.js 15 frontend (App Router)
-├── .env → Shared environment variables (or separate .env files in each folder)
 └── README.md → This file
 
 
