@@ -26,7 +26,7 @@ const modelConfigs = [
         preprompt: 'Respond accurately in under 50 words. For multiple choice, identify the correct answer with a short explanation.'
     },
     {
-        name: 'meta-llama/llama-prompt-guard-2-22m',
+        name: 'moonshotai/kimi-k2-instruct-0905',
         apiKey: process.env.GROQ_API_KEY5,
         preprompt: 'Keep responses brief (under 50 words). Be direct. For MCQs, choose the right option and explain briefly.'
     }
