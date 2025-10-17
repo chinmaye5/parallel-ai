@@ -6,7 +6,7 @@ const logger = require('./logger');
 // Model-specific configurations with different API keys
 const modelConfigs = [
     {
-        name: 'llama3-8b-8192',
+        name: 'llama-3.1-8b-instant',
         apiKey: process.env.GROQ_API_KEY1,
         preprompt: 'Answer concisely under 50 words. Be factual. For MCQs, provide option and brief explanation.'
     },
@@ -16,17 +16,17 @@ const modelConfigs = [
         preprompt: 'just give 1 line answer without any explaination and dont give what u think For MCQs, clearly state the correct option with reasoning.'
     },
     {
-        name: 'deepseek-r1-distill-llama-70b',
+        name: 'groq/compound-mini',
         apiKey: process.env.GROQ_API_KEY3,
         preprompt: 'Give precise answers under 50 words. If unsure, say so. For MCQs, select the best option with justification.'
     },
     {
-        name: 'gemma2-9b-it',
+        name: 'openai/gpt-oss-20b',
         apiKey: process.env.GROQ_API_KEY4,
         preprompt: 'Respond accurately in under 50 words. For multiple choice, identify the correct answer with a short explanation.'
     },
     {
-        name: 'llama-3.1-8b-instant',
+        name: 'meta-llama/llama-prompt-guard-2-22m',
         apiKey: process.env.GROQ_API_KEY5,
         preprompt: 'Keep responses brief (under 50 words). Be direct. For MCQs, choose the right option and explain briefly.'
     }
