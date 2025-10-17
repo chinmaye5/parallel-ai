@@ -42,20 +42,20 @@ export default function Chat() {
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
     const availableModels = [
-        'llama3-8b-8192',
-        'qwen/qwen3-32b',
-        'deepseek-r1-distill-llama-70b',
-        'gemma2-9b-it',
-        'llama-3.1-8b-instant'
-    ];
+    'llama-3.1-8b-instant',
+    'qwen/qwen3-32b', 
+    'groq/compound-mini',
+    'openai/gpt-oss-20b',
+    'moonshotai/kimi-k2-instruct-0905'
+];
 
-    const modelBrands: Record<string, string> = {
-        'llama3-8b-8192': 'Meta',
-        'qwen/qwen3-32b': 'Alibaba',
-        'deepseek-r1-distill-llama-70b': 'DeepSeek',
-        'gemma2-9b-it': 'Google',
-        'llama-3.1-8b-instant': 'Meta'
-    };
+const modelBrands: Record<string, string> = {
+    'llama-3.1-8b-instant': 'Meta',
+    'qwen/qwen3-32b': 'Alibaba',
+    'groq/compound-mini': 'Groq',
+    'openai/gpt-oss-20b': 'OpenAI',
+    'moonshotai/kimi-k2-instruct-0905': 'Moonshot AI'
+};
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
