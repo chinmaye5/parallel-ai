@@ -13,7 +13,7 @@
     "date-fns": "^4.1.0",
     "groq-sdk": "^0.27.0",
     "lucide-react": "^0.525.0",
-    "next": "15.4.2",
+    "next": "15.4.10",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwindcss": "^3.4.1"
