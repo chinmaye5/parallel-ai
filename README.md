@@ -4,7 +4,8 @@ ParallelAI is a fullstack application that answers your questions using multiple
 Built with **Next.js** (frontend) and **Node.js + Express + MongoDB** (backend).
 
 ---
-
+# Live - https://theparallelai.vercel.app/
+---
 ##  Project Structure
 
 parallel-ai/
