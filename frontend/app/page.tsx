@@ -84,9 +84,9 @@ const LandingPage = () => {
   const models = [
     { name: "Llama 3.1", brand: "Meta", logo: "/models/meta.png" },
     { name: "Qwen 3", brand: "Alibaba", logo: "/models/Qwen_logo.svg.png" },
-    { name: "Compound", brand: "Groq", logo: "/models/download.png" },
+    { name: "Compound", brand: "Groq", logo: "/models/groq.png" },
     { name: "GPT-OSS", brand: "OpenAI", logo: "/models/openai.png" },
-    { name: "Kimi-K2", brand: "Moonshot AI", logo: "/models/moonshot.png" }
+    { name: "Kimi-K2", brand: "Moonshot AI", logo: "/models/kimi-ai-logo.webp" }
   ];
 
   return (
