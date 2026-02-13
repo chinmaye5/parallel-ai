@@ -16,6 +16,11 @@ const messageSchema = new mongoose.Schema({
         status: String
     }],
     selectedModel: String,
+    consensus: {
+        model: String,
+        answer: String,
+        status: String
+    },
     createdAt: {
         type: Date,
         default: Date.now

@@ -8,27 +8,27 @@ const modelConfigs = [
     {
         name: 'llama-3.1-8b-instant',
         apiKey: process.env.GROQ_API_KEY1,
-        preprompt: 'Answer concisely under 50 words. Be factual. For MCQs, provide option and brief explanation.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "concise factual answer under 50 words", "explanation": "brief reasoning"}.'
     },
     {
         name: 'qwen/qwen3-32b',
         apiKey: process.env.GROQ_API_KEY2,
-        preprompt: 'just give 1 line answer without any explaination and dont give what u think For MCQs, clearly state the correct option with reasoning.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "1-line answer", "explanation": "reasoning if needed"}.'
     },
     {
         name: 'groq/compound-mini',
         apiKey: process.env.GROQ_API_KEY3,
-        preprompt: 'Give precise answers under 50 words. If unsure, say so. For MCQs, select the best option with justification.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "precise answer under 50 words", "explanation": "justification"}.'
     },
     {
         name: 'openai/gpt-oss-20b',
         apiKey: process.env.GROQ_API_KEY4,
-        preprompt: 'Respond accurately in under 50 words. For multiple choice, identify the correct answer with a short explanation.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "accurate identification", "explanation": "short explanation"}.'
     },
     {
         name: 'moonshotai/kimi-k2-instruct-0905',
         apiKey: process.env.GROQ_API_KEY5,
-        preprompt: 'Keep responses brief (under 50 words). Be direct. For MCQs, choose the right option and explain briefly.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "direct brief choice", "explanation": "context"}.'
     }
 ];
 
@@ -63,7 +63,8 @@ const getQuickResponseFromAllModels = async (userQuestion) => {
                     }],
                     model: modelConfig.name,
                     max_tokens: 1500,
-                    temperature: 0.7
+                    temperature: 0.2,
+                    response_format: { type: "json_object" }
                 });
 
                 responses.push({
@@ -103,24 +104,20 @@ const getResponseFromModel = async (model, userQuestion, maxTokens = 4000) => {
         const response = await groq.chat.completions.create({
             messages: [{
                 role: 'system',
-                content: `Consider yourself an industry expert in the field the question is based on. Provide a detailed, comprehensive answer, including:
-                - Clear explanations of key concepts
-                - Relevant examples or use cases
-                - Practical applications where applicable
-                - Code snippets for technical questions
-                Aim for a response length of 300-800 words, depending on question complexity.`
+                content: config.preprompt
             }, {
                 role: 'user',
                 content: userQuestion
             }],
             model,
             max_tokens: maxTokens,
-            temperature: 0.7
+            temperature: 0.2,
+            response_format: { type: "json_object" }
         });
 
         return {
             model,
-            answer: response.choices[0]?.message?.content || 'No response',
+            answer: response.choices[0]?.message?.content || '{"short_ans": "No response", "explanation": ""}',
             status: 'success'
         };
     } catch (error) {
@@ -129,8 +126,66 @@ const getResponseFromModel = async (model, userQuestion, maxTokens = 4000) => {
     }
 };
 
+const getConsensusAnswer = async (userQuestion, responses) => {
+    try {
+        // Use the highest capacity model for consensus
+        const config = modelConfigs[0];
+        const groq = createGroqClient(config.apiKey);
+
+        // Truncate individual answers to stay within TPM limits if needed
+        const modelsContext = responses
+            .filter(r => r.status === 'success')
+            .map(r => `Model (${r.model}): ${r.answer.substring(0, 1000)}`)
+            .join('\n\n---\n\n');
+
+        const consensusPrompt = `
+            Analyze these AI responses and the user question.
+            Return ONLY a JSON object:
+            {
+              "short_ans": "One-line clear answer",
+              "explanation": "Brief synthesis of logic"
+            }
+            
+            Question: ${userQuestion}
+            
+            Responses:
+            ${modelsContext}
+        `;
+
+        const response = await groq.chat.completions.create({
+            messages: [{
+                role: 'system',
+                content: 'You are an expert consensus engine. Output ONLY JSON.'
+            }, {
+                role: 'user',
+                content: consensusPrompt
+            }],
+            model: config.name,
+            max_tokens: 1000,
+            temperature: 0.1,
+            response_format: { type: "json_object" }
+        });
+
+        return {
+            model: 'ParallelAI Consensus',
+            answer: response.choices[0]?.message?.content || 'Unable to generate consensus',
+            status: 'success'
+        };
+    } catch (error) {
+        logger.error('Consensus generation error:', error);
+        return {
+            model: 'ParallelAI Consensus',
+            answer: 'Failed to generate consensus due to a technical error.',
+            status: 'error'
+        };
+    }
+};
+
 module.exports = {
     getQuickResponseFromAllModels,
     getResponseFromModel,
-    availableModels
+    getConsensusAnswer,
+    availableModels,
+    modelConfigs
 };
+
