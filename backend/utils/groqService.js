@@ -48,136 +48,202 @@ const createGroqClient = (apiKey) => {
 
 const getQuickResponseFromAllModels = async (userQuestion) => {
     try {
-        const responses = [];
+        const modelPromises = modelConfigs.map(async (modelConfig) => {
+            let retries = 0;
+            const maxRetries = 2;
+            const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        for (const modelConfig of modelConfigs) {
-            try {
-                const groq = createGroqClient(modelConfig.apiKey);
-                const completion = await groq.chat.completions.create({
-                    messages: [{
-                        role: 'system',
-                        content: modelConfig.preprompt
-                    }, {
-                        role: 'user',
-                        content: userQuestion
-                    }],
-                    model: modelConfig.name,
-                    max_tokens: 1500,
-                    temperature: 0.2,
-                    response_format: { type: "json_object" }
-                });
+            while (retries <= maxRetries) {
+                try {
+                    const groq = createGroqClient(modelConfig.apiKey);
 
-                responses.push({
-                    model: modelConfig.name,
-                    answer: completion.choices[0]?.message?.content || 'No response',
-                    status: 'success'
-                });
-            } catch (error) {
-                logger.warn(`Model ${modelConfig.name} failed: ${error.message}`);
-                responses.push({
-                    model: modelConfig.name,
-                    answer: 'Model unavailable',
-                    status: 'error'
-                });
+                    // Create a promise that rejects after 15 seconds
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Request timed out')), 15000)
+                    );
+
+                    const requestPromise = groq.chat.completions.create({
+                        messages: [{
+                            role: 'system',
+                            content: modelConfig.preprompt
+                        }, {
+                            role: 'user',
+                            content: userQuestion
+                        }],
+                        model: modelConfig.name,
+                        max_tokens: 1000,
+                        temperature: 0.2,
+                        response_format: { type: "json_object" }
+                    });
+
+                    const completion = await Promise.race([requestPromise, timeoutPromise]);
+
+                    return {
+                        model: modelConfig.name,
+                        answer: completion.choices[0]?.message?.content || 'No response',
+                        status: 'success'
+                    };
+                } catch (error) {
+                    const isRateLimit = error.status === 429 || error.message?.includes('rate_limit_exceeded');
+                    if (isRateLimit && retries < maxRetries) {
+                        retries++;
+                        logger.warn(`Rate limit hit for ${modelConfig.name}, retrying (${retries}/${maxRetries})...`);
+                        await delay(1000 * retries); // Exponential backoff
+                        continue;
+                    }
+
+                    logger.warn(`Model ${modelConfig.name} failed: ${error.message}`);
+                    return {
+                        model: modelConfig.name,
+                        answer: 'Model unavailable',
+                        status: 'error',
+                        error: error.message
+                    };
+                }
             }
-        }
+        });
 
-        if (responses.every(r => r.status === 'error')) {
+        const results = await Promise.all(modelPromises);
+
+        if (results.every(r => r.status === 'error')) {
             throw new ApiError(503, 'All models failed to respond');
         }
 
-        return responses;
+        return results;
     } catch (error) {
-        logger.error('Groq API error:', error);
+        logger.error('Groq API error in getQuickResponseFromAllModels:', error);
         throw error instanceof ApiError ? error : new ApiError(500, 'Error communicating with Groq API');
     }
 };
 
 const getResponseFromModel = async (model, userQuestion, maxTokens = 4000) => {
-    try {
-        const config = modelConfigs.find(m => m.name === model);
-        if (!config) {
-            throw new ApiError(400, 'Invalid model specified');
+    let retries = 0;
+    const maxRetries = 2;
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    while (retries <= maxRetries) {
+        try {
+            const config = modelConfigs.find(m => m.name === model);
+            if (!config) {
+                throw new ApiError(400, 'Invalid model specified');
+            }
+
+            const groq = createGroqClient(config.apiKey);
+
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Model request timed out')), 30000)
+            );
+
+            const requestPromise = groq.chat.completions.create({
+                messages: [{
+                    role: 'system',
+                    content: config.preprompt
+                }, {
+                    role: 'user',
+                    content: userQuestion
+                }],
+                model,
+                max_tokens: maxTokens,
+                temperature: 0.2,
+                response_format: { type: "json_object" }
+            });
+
+            const response = await Promise.race([requestPromise, timeoutPromise]);
+
+            return {
+                model,
+                answer: response.choices[0]?.message?.content || '{"short_ans": "No response", "explanation": ""}',
+                status: 'success'
+            };
+        } catch (error) {
+            const isRateLimit = error.status === 429 || error.message?.includes('rate_limit_exceeded');
+            if (isRateLimit && retries < maxRetries) {
+                retries++;
+                logger.warn(`Rate limit hit for ${model}, retrying (${retries}/${maxRetries})...`);
+                await delay(1000 * retries);
+                continue;
+            }
+
+            logger.error('Groq API error:', error);
+            throw error instanceof ApiError ? error : new ApiError(500, 'Error communicating with Groq API');
         }
-
-        const groq = createGroqClient(config.apiKey);
-        const response = await groq.chat.completions.create({
-            messages: [{
-                role: 'system',
-                content: config.preprompt
-            }, {
-                role: 'user',
-                content: userQuestion
-            }],
-            model,
-            max_tokens: maxTokens,
-            temperature: 0.2,
-            response_format: { type: "json_object" }
-        });
-
-        return {
-            model,
-            answer: response.choices[0]?.message?.content || '{"short_ans": "No response", "explanation": ""}',
-            status: 'success'
-        };
-    } catch (error) {
-        logger.error('Groq API error:', error);
-        throw error instanceof ApiError ? error : new ApiError(500, 'Error communicating with Groq API');
     }
 };
 
 const getConsensusAnswer = async (userQuestion, responses) => {
-    try {
-        // Use the highest capacity model for consensus
-        const config = modelConfigs[0];
-        const groq = createGroqClient(config.apiKey);
+    let retries = 0;
+    const maxRetries = 2;
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        // Truncate individual answers to stay within TPM limits if needed
-        const modelsContext = responses
-            .filter(r => r.status === 'success')
-            .map(r => `Model (${r.model}): ${r.answer.substring(0, 1000)}`)
-            .join('\n\n---\n\n');
+    while (retries <= maxRetries) {
+        try {
+            // Use the highest capacity model for consensus
+            const config = modelConfigs[0];
+            const groq = createGroqClient(config.apiKey);
 
-        const consensusPrompt = `
-            Analyze these AI responses and the user question.
-            Return ONLY a JSON object:
-            {
-              "short_ans": "One-line clear answer",
-              "explanation": "Brief synthesis of logic"
+            // Truncate individual answers to stay within TPM limits
+            // Using 500 chars instead of 1000 to be safer
+            const modelsContext = responses
+                .filter(r => r.status === 'success')
+                .map(r => `Model (${r.model}): ${r.answer.substring(0, 500)}`)
+                .join('\n\n---\n\n');
+
+            const consensusPrompt = `
+                Analyze these AI responses and the user question.
+                Return ONLY a JSON object:
+                {
+                  "short_ans": "One-line clear answer",
+                  "explanation": "Brief synthesis of logic"
+                }
+                
+                Question: ${userQuestion}
+                
+                Responses:
+                ${modelsContext}
+            `;
+
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Consensus request timed out')), 20000)
+            );
+
+            const requestPromise = groq.chat.completions.create({
+                messages: [{
+                    role: 'system',
+                    content: 'You are an expert consensus engine. Output ONLY JSON.'
+                }, {
+                    role: 'user',
+                    content: consensusPrompt
+                }],
+                model: config.name,
+                max_tokens: 1000,
+                temperature: 0.1,
+                response_format: { type: "json_object" }
+            });
+
+            const response = await Promise.race([requestPromise, timeoutPromise]);
+
+            return {
+                model: 'ParallelAI Consensus',
+                answer: response.choices[0]?.message?.content || 'Unable to generate consensus',
+                status: 'success'
+            };
+        } catch (error) {
+            const isRateLimit = error.status === 429 || error.message?.includes('rate_limit_exceeded');
+            if (isRateLimit && retries < maxRetries) {
+                retries++;
+                logger.warn(`Consensus rate limit hit, retrying (${retries}/${maxRetries})...`);
+                await delay(1500 * retries);
+                continue;
             }
-            
-            Question: ${userQuestion}
-            
-            Responses:
-            ${modelsContext}
-        `;
 
-        const response = await groq.chat.completions.create({
-            messages: [{
-                role: 'system',
-                content: 'You are an expert consensus engine. Output ONLY JSON.'
-            }, {
-                role: 'user',
-                content: consensusPrompt
-            }],
-            model: config.name,
-            max_tokens: 1000,
-            temperature: 0.1,
-            response_format: { type: "json_object" }
-        });
-
-        return {
-            model: 'ParallelAI Consensus',
-            answer: response.choices[0]?.message?.content || 'Unable to generate consensus',
-            status: 'success'
-        };
-    } catch (error) {
-        logger.error('Consensus generation error:', error);
-        return {
-            model: 'ParallelAI Consensus',
-            answer: 'Failed to generate consensus due to a technical error.',
-            status: 'error'
-        };
+            logger.error('Consensus generation error:', error);
+            return {
+                model: 'ParallelAI Consensus',
+                answer: 'Failed to generate consensus due to a technical error.',
+                status: 'error',
+                error: error.message
+            };
+        }
     }
 };
 
