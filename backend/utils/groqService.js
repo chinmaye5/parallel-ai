@@ -8,7 +8,7 @@ const modelConfigs = [
     {
         name: 'llama-3.1-8b-instant',
         apiKey: process.env.GROQ_API_KEY1,
-        preprompt: 'Return ONLY JSON: {"short_ans": "concise factual answer under 50 words", "explanation": "brief reasoning"}.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "concise factual answer under 10 words", "explanation": "brief reasoning"}.'
     },
     {
         name: 'qwen/qwen3-32b',
