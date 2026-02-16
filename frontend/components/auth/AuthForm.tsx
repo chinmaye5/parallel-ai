@@ -64,7 +64,7 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
                     </div>
                     <div className="space-y-1">
                         <h2 className="text-xl font-black text-white uppercase tracking-widest">
-                            {isLogin ? 'Protocol Login' : 'Register Node'}
+                            {isLogin ? 'Login' : 'Register'}
                         </h2>
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
                             Parallel Intelligence Interface
@@ -78,13 +78,13 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
                         onClick={() => setIsLogin(true)}
                         className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${isLogin ? 'bg-white/10 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
                     >
-                        Access
+                        Login
                     </button>
                     <button
                         onClick={() => setIsLogin(false)}
                         className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${!isLogin ? 'bg-white/10 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
                     >
-                        Enroll
+                        Register
                     </button>
                 </div>
 
@@ -160,12 +160,24 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
                                 <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
                                 <>
-                                    <span>Initialize Interface</span>
+                                    <span>{isLogin ? 'Sign In' : 'Sign Up'}</span>
                                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                                 </>
                             )}
                         </span>
                     </button>
+
+                    {isLoading && (
+                        <div className="flex flex-col items-center space-y-2 animate-fadeIn">
+                            <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest text-center animate-pulse">
+                                Backend is turning on
+                            </p>
+                            <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest text-center">
+                                This might take up to 30-50 seconds
+                            </p>
+                        </div>
+                    )}
+
                 </form>
 
                 <p className="text-center text-[9px] font-bold text-gray-600 uppercase tracking-widest">

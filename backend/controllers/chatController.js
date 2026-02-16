@@ -105,6 +105,7 @@ exports.getHistory = asyncHandler(async (req, res) => {
     const history = conversation ? conversation.messages
         .sort((a, b) => b.createdAt - a.createdAt)
         .map(message => ({
+            id: message._id,
             question: message.question,
             mode: message.mode,
             responses: message.responses,
@@ -113,4 +114,19 @@ exports.getHistory = asyncHandler(async (req, res) => {
             createdAt: message.createdAt
         })) : [];
     res.json(history);
+});
+
+exports.deleteChat = asyncHandler(async (req, res) => {
+    const { chatId } = req.params;
+    const userId = req.user.id;
+
+    const conversation = await Conversation.findOne({ user: userId });
+    if (!conversation) {
+        return res.status(404).json({ message: 'Conversation not found' });
+    }
+
+    conversation.messages = conversation.messages.filter(msg => msg._id.toString() !== chatId);
+    await conversation.save();
+
+    res.json({ message: 'Chat deleted successfully' });
 });

@@ -7,5 +7,6 @@ router.post('/multi', protect, chatController.multiModeChat);
 router.post('/single', protect, chatController.singleModeChat);
 router.post('/consensus', protect, chatController.consensusChat);
 router.get('/history', protect, chatController.getHistory);
+router.delete('/:chatId', protect, chatController.deleteChat);
 
 module.exports = router;

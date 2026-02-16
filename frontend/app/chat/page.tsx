@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import axios from 'axios';
 import ChatForm from '@/components/chat/ChatForm';
 import Responses from '@/components/chat/Responses';
@@ -22,6 +23,7 @@ interface Response {
 }
 
 interface ConversationEntry {
+    id?: string;
     question: string;
     mode: 'multi' | 'single';
     selectedModel?: string;
@@ -31,7 +33,9 @@ interface ConversationEntry {
     isConsensusLoading?: boolean;
 }
 
+
 interface HistoryItem {
+    id: string;
     question: string;
     mode: string;
     selectedModel?: string;
@@ -112,6 +116,22 @@ export default function Chat() {
         }
     };
 
+    const handleDeleteHistory = async (id: string) => {
+        if (!token) return;
+        try {
+            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setHistory(prev => prev.filter(item => item.id !== id));
+            // If the deleted chat is the current one, reset view
+            if (conversation.length > 0 && conversation[0].id === id) {
+                handleNewChat();
+            }
+        } catch (err) {
+            setError('Failed to delete history');
+        }
+    };
+
     const handleAuthSuccess = (token: string, userData: User) => {
         const user = { ...userData, avatar: userData.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=random` };
         setToken(token);
@@ -138,6 +158,7 @@ export default function Chat() {
 
     const handleLoadHistory = (item: HistoryItem) => {
         setConversation([{
+            id: item.id,
             question: item.question,
             mode: item.mode as 'multi' | 'single',
             selectedModel: item.selectedModel,
@@ -148,6 +169,7 @@ export default function Chat() {
         setHasStarted(true);
         setIsMobileSidebarOpen(false);
     };
+
 
     const handleChat = async (question: string, mode: 'multi' | 'single', selectedModel: string) => {
         if (!token) return;
@@ -275,16 +297,17 @@ export default function Chat() {
                 flex flex-col shadow-2xl shadow-blue-500/5
             `}>
                 <div className="p-6 border-b border-white/5 flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
+                    <Link href="/" className="flex items-center space-x-3 group cursor-pointer transition-transform hover:scale-[1.02]">
+                        <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:bg-blue-500 transition-colors">
                             <Brain className="w-5 h-5 text-white" />
                         </div>
                         <h1 className="text-sm font-black text-white uppercase tracking-widest">Parallel<span className="text-blue-500">AI</span></h1>
-                    </div>
+                    </Link>
                     <button onClick={() => setIsMobileSidebarOpen(false)} className="lg:hidden p-2 text-gray-400 hover:text-white transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
+
 
                 <div className="p-4">
                     <button
@@ -304,8 +327,10 @@ export default function Chat() {
                     <History
                         history={history}
                         onLoadHistory={handleLoadHistory}
+                        onDeleteHistory={handleDeleteHistory}
                         compact={true}
                     />
+
                 </div>
 
                 <div className="p-4 border-t border-white/5 bg-black/40 relative">
@@ -319,7 +344,7 @@ export default function Chat() {
                                     <div className="p-2 rounded-lg bg-rose-500/10 group-hover:bg-rose-500/20 transition-colors">
                                         <LogOut className="w-4 h-4" />
                                     </div>
-                                    <span className="text-xs font-bold uppercase tracking-wider">Terminate Session</span>
+                                    <span className="text-xs font-bold uppercase tracking-wider">Log Out</span>
                                 </button>
                             </div>
                         </div>
