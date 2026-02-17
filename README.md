@@ -140,4 +140,3 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 - [MongoDB](https://www.mongodb.com/) for reliable data persistence.
 
 ---
-Developed with ❤️ by [Chinmaye HG](https://github.com/chinmaye5)
