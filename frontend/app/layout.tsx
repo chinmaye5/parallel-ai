@@ -4,8 +4,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Chatbot App',
-  description: 'Simple chatbot with multi and single model modes',
+  title: 'ParallelAI — Collective Intelligence',
+  description: 'A multi-model AI Q&A platform for parallel inference and consensus synthesis.',
 };
 
 export default function RootLayout({
