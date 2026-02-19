@@ -1,4 +1,4 @@
-# 🤖 ParallelAI — The Collective Intelligence Engine
+# ParallelAI — The Collective Intelligence Engine
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20-green?style=flat-square&logo=node.js)](https://nodejs.org/)
@@ -10,29 +10,29 @@
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 Experience ParallelAI: [theparallelai.vercel.app](https://theparallelai.vercel.app/)
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 🚀 Parallel Multi-Model Inference
+### Parallel Multi-Model Inference
 Query up to 5 different AI models simultaneously. See how different architectures (Llama, Qwen, etc.) interpret and respond to the same prompt in real-time.
 
-### 🧠 Consensus Engine
+###  Consensus Engine
 Our proprietary consensus logic takes responses from all active models and synthesizes them into a single, highly accurate, and balanced "Super Answer."
 
-### 🔐 Secure Authentication & Persistence
+###  Secure Authentication & Persistence
 - **JWT-based Auth:** Secure login and registration system.
 - **Chat History:** All your queries and multi-model responses are stored securely in MongoDB Atlas for later review.
 
-### ⚡ Blazing Fast Performance
+###  Blazing Fast Performance
 Built on the **Groq LPU™ Inference Engine**, delivering near-instantaneous responses across multiple models at once.
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 | Layer | Technologies |
 | :--- | :--- |
@@ -42,7 +42,7 @@ Built on the **Groq LPU™ Inference Engine**, delivering near-instantaneous res
 | **AI Layer** | Groq SDK (LLM Orchestration) |
 | **Security** | JSON Web Tokens (JWT), Bcrypt.js |
 
-### 🤖 Orchestrated Models
+###  Orchestrated Models
 - `llama-3.1-8b-instant`
 - `qwen/qwen3-32b`
 - `groq/compound-mini`
@@ -51,7 +51,7 @@ Built on the **Groq LPU™ Inference Engine**, delivering near-instantaneous res
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 parallel-ai/
@@ -70,14 +70,14 @@ parallel-ai/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
-### 📋 Prerequisites
+###  Prerequisites
 - Node.js (v18+)
 - MongoDB Atlas Account
 - Groq API Key(s)
 
-### ⚙️ Environment Variables
+###  Environment Variables
 
 #### Backend (`/backend/.env`)
 ```env
@@ -96,7 +96,7 @@ GROQ_API_KEY5=gsk_your_key_5
 NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
-### 🛠️ Installation
+###  Installation
 
 1. **Clone the repository:**
    ```bash
@@ -120,7 +120,7 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 
 ---
 
-## 💡 Usage
+##  Usage
 
 1. **Sign Up / Login:** Create an account to start your parallel workspace.
 2. **Select Mode:** 
@@ -131,10 +131,10 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 
 ---
 
-## 📜 License
+##  License
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
-## 🤝 Acknowledgements
+##  Acknowledgements
 - [Groq](https://groq.com/) for their incredible inference speed.
 - [Vercel](https://vercel.com/) for frontend hosting.
 - [MongoDB](https://www.mongodb.com/) for reliable data persistence.
