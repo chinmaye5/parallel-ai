@@ -7,6 +7,7 @@ interface Response {
     model: string;
     answer: string;
     status?: string;
+    responseTime?: number;
 }
 
 interface ResponsesProps {
@@ -71,9 +72,17 @@ export default function Responses({ responses, modelBrands, consensus, isConsens
             {/* Consensus Section */}
             {(consensus || isConsensusLoading) && (
                 <div className="relative">
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-3 lg:mb-4">
-                        <Scale className="w-4 h-4 lg:w-5 lg:h-5 text-blue-500" />
-                        <h3 className="text-[9px] lg:text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] lg:tracking-[0.3em]">Parallel AI Aggregate Victory</h3>
+                    <div className="flex items-center justify-between mb-3 lg:mb-4">
+                        <div className="flex items-center space-x-2 lg:space-x-3">
+                            <Scale className="w-4 h-4 lg:w-5 lg:h-5 text-blue-500" />
+                            <h3 className="text-[9px] lg:text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] lg:tracking-[0.3em]">Parallel AI Aggregate Victory</h3>
+                        </div>
+                        {consensus?.responseTime && (
+                            <div className="flex items-center space-x-1.5 px-2 py-1 rounded-md bg-blue-500/5 border border-blue-500/10">
+                                <RefreshCcw className="w-3 h-3 text-blue-400" />
+                                <span className="text-[9px] font-black text-blue-400 uppercase tracking-widest">{consensus.responseTime}s</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className={`relative p-5 lg:p-8 rounded-2xl lg:rounded-[2rem] bg-gray-900 border border-blue-500/20 transition-all duration-700 ${isConsensusLoading ? 'animate-pulse' : ''}`}>
@@ -142,9 +151,14 @@ export default function Responses({ responses, modelBrands, consensus, isConsens
                                 key={id}
                                 className={`flex flex-col bg-gray-950 border rounded-xl lg:rounded-2xl transition-all duration-300 hover:bg-gray-900 ${modelGlows[brand] || 'border-white/5'}`}
                             >
-                                <div className="flex items-center justify-between px-4 py-2.5 lg:py-3.5 border-b border-white/[0.05] bg-white/[0.01]">
-                                    <span className="text-[11px] lg:text-[13px] font-black text-white truncate max-w-[100px] lg:max-w-[120px] uppercase tracking-wider">{getShortModelName(resp.model)}</span>
-                                    <span className="text-[9px] lg:text-[11px] font-black text-blue-500/80 uppercase tracking-widest">{brand}</span>
+                                <div className="flex items-center justify-between px-3 py-2 border-b border-white/[0.05] bg-white/[0.01]">
+                                    <div className="flex flex-col min-w-0">
+                                        <span className="text-[10px] lg:text-[11px] font-black text-white truncate uppercase tracking-wider">{getShortModelName(resp.model)}</span>
+                                        <span className="text-[8px] font-black text-blue-500/80 uppercase tracking-[0.1em]">{brand}</span>
+                                    </div>
+                                    {resp.responseTime && (
+                                        <span className="text-[9px] font-bold text-gray-500 tabular-nums">{resp.responseTime}s</span>
+                                    )}
                                 </div>
 
                                 <div className="p-3 lg:p-4 flex-1">

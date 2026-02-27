@@ -13,13 +13,15 @@ const messageSchema = new mongoose.Schema({
     responses: [{
         model: String,
         answer: String,
-        status: String
+        status: String,
+        responseTime: Number
     }],
     selectedModel: String,
     consensus: {
         model: String,
         answer: String,
-        status: String
+        status: String,
+        responseTime: Number
     },
     createdAt: {
         type: Date,

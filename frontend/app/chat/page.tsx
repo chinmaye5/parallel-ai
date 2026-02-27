@@ -20,6 +20,7 @@ interface Response {
     model: string;
     answer: string;
     status?: string;
+    responseTime?: number;
 }
 
 interface ConversationEntry {

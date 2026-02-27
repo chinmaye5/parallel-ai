@@ -13,22 +13,22 @@ const modelConfigs = [
     {
         name: 'qwen/qwen3-32b',
         apiKey: process.env.GROQ_API_KEY2,
-        preprompt: 'Return ONLY JSON: {"short_ans": "1-line answer", "explanation": "reasoning if needed"}.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "1-line answer", "explanation": "brief reasoning"}.'
     },
     {
         name: 'groq/compound-mini',
         apiKey: process.env.GROQ_API_KEY3,
-        preprompt: 'Return ONLY JSON: {"short_ans": "precise answer under 50 words", "explanation": "justification"}.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "precise answer under 50 words", "explanation": "brief reasoning"}.'
     },
     {
         name: 'openai/gpt-oss-20b',
         apiKey: process.env.GROQ_API_KEY4,
-        preprompt: 'Return ONLY JSON: {"short_ans": "accurate identification", "explanation": "short explanation"}.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "accurate identification", "explanation": "brief reasoning"}.'
     },
     {
         name: 'moonshotai/kimi-k2-instruct-0905',
         apiKey: process.env.GROQ_API_KEY5,
-        preprompt: 'Return ONLY JSON: {"short_ans": "direct brief choice", "explanation": "context"}.'
+        preprompt: 'Return ONLY JSON: {"short_ans": "direct brief choice", "explanation": "brief reasoning"}.'
     }
 ];
 
@@ -76,12 +76,16 @@ const getQuickResponseFromAllModels = async (userQuestion) => {
                         response_format: { type: "json_object" }
                     });
 
+                    const startTime = Date.now();
                     const completion = await Promise.race([requestPromise, timeoutPromise]);
+                    const endTime = Date.now();
+                    const responseTime = (endTime - startTime) / 1000;
 
                     return {
                         model: modelConfig.name,
                         answer: completion.choices[0]?.message?.content || 'No response',
-                        status: 'success'
+                        status: 'success',
+                        responseTime: parseFloat(responseTime.toFixed(2))
                     };
                 } catch (error) {
                     const isRateLimit = error.status === 429 || error.message?.includes('rate_limit_exceeded');
@@ -148,12 +152,16 @@ const getResponseFromModel = async (model, userQuestion, maxTokens = 4000) => {
                 response_format: { type: "json_object" }
             });
 
+            const startTime = Date.now();
             const response = await Promise.race([requestPromise, timeoutPromise]);
+            const endTime = Date.now();
+            const responseTime = (endTime - startTime) / 1000;
 
             return {
                 model,
                 answer: response.choices[0]?.message?.content || '{"short_ans": "No response", "explanation": ""}',
-                status: 'success'
+                status: 'success',
+                responseTime: parseFloat(responseTime.toFixed(2))
             };
         } catch (error) {
             const isRateLimit = error.status === 429 || error.message?.includes('rate_limit_exceeded');
@@ -220,12 +228,16 @@ const getConsensusAnswer = async (userQuestion, responses) => {
                 response_format: { type: "json_object" }
             });
 
+            const startTime = Date.now();
             const response = await Promise.race([requestPromise, timeoutPromise]);
+            const endTime = Date.now();
+            const responseTime = (endTime - startTime) / 1000;
 
             return {
                 model: 'ParallelAI Consensus',
                 answer: response.choices[0]?.message?.content || 'Unable to generate consensus',
-                status: 'success'
+                status: 'success',
+                responseTime: parseFloat(responseTime.toFixed(2))
             };
         } catch (error) {
             const isRateLimit = error.status === 429 || error.message?.includes('rate_limit_exceeded');
