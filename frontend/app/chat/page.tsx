@@ -63,7 +63,7 @@ export default function Chat() {
         'qwen/qwen3-32b',
         'groq/compound-mini',
         'openai/gpt-oss-20b',
-        'moonshotai/kimi-k2-instruct-0905'
+        'openai/gpt-oss-120b'
     ];
 
     const modelBrands: Record<string, string> = {
@@ -71,7 +71,7 @@ export default function Chat() {
         'qwen/qwen3-32b': 'Alibaba',
         'groq/compound-mini': 'Groq',
         'openai/gpt-oss-20b': 'OpenAI',
-        'moonshotai/kimi-k2-instruct-0905': 'Moonshot AI'
+        'openai/gpt-oss-120b': 'OpenAI'
     };
 
     const scrollToBottom = () => {

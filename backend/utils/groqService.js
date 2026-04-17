@@ -26,7 +26,7 @@ const modelConfigs = [
         preprompt: 'Return ONLY JSON: {"short_ans": "accurate identification", "explanation": "brief reasoning"}.'
     },
     {
-        name: 'moonshotai/kimi-k2-instruct-0905',
+        name: 'openai/gpt-oss-120b',
         apiKey: process.env.GROQ_API_KEY5,
         preprompt: 'Return ONLY JSON: {"short_ans": "direct brief choice", "explanation": "brief reasoning"}.'
     }
