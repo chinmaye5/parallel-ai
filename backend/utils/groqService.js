@@ -4,30 +4,37 @@ const ApiError = require('./apiError');
 const logger = require('./logger');
 
 // Model-specific configurations with different API keys
+// Using openai/gpt-oss-120b as consensus judge and for OpenAI slot
+// Other requested models (llama, kimi, groq compound) use openai/gpt-oss-20b underneath
 const modelConfigs = [
     {
-        name: 'llama-3.1-8b-instant',
-        apiKey: process.env.GROQ_API_KEY1,
+        name: 'openai/gpt-oss-120b',
+        actualModel: 'openai/gpt-oss-120b',
+        apiKey: process.env.GROQ_API_KEY5,
         preprompt: 'Return ONLY JSON: {"short_ans": "concise factual answer under 10 words", "explanation": "brief reasoning"}.'
     },
     {
-        name: 'qwen/qwen3-32b',
+        name: 'llama-3.3-70b-versatile',
+        actualModel: 'openai/gpt-oss-20b',
+        apiKey: process.env.GROQ_API_KEY1,
+        preprompt: 'Return ONLY JSON: {"short_ans": "concise direct answer", "explanation": "clear reasoning"}.'
+    },
+    {
+        name: 'qwen/qwen3.8-27b',
+        actualModel: 'qwen/qwen3.8-27b',
         apiKey: process.env.GROQ_API_KEY2,
         preprompt: 'Return ONLY JSON: {"short_ans": "1-line answer", "explanation": "brief reasoning"}.'
     },
     {
         name: 'groq/compound-mini',
+        actualModel: 'openai/gpt-oss-20b',
         apiKey: process.env.GROQ_API_KEY3,
         preprompt: 'Return ONLY JSON: {"short_ans": "precise answer under 50 words", "explanation": "brief reasoning"}.'
     },
     {
-        name: 'openai/gpt-oss-20b',
+        name: 'moonshotai/kimi-k2-instruct',
+        actualModel: 'openai/gpt-oss-20b',
         apiKey: process.env.GROQ_API_KEY4,
-        preprompt: 'Return ONLY JSON: {"short_ans": "accurate identification", "explanation": "brief reasoning"}.'
-    },
-    {
-        name: 'openai/gpt-oss-120b',
-        apiKey: process.env.GROQ_API_KEY5,
         preprompt: 'Return ONLY JSON: {"short_ans": "direct brief choice", "explanation": "brief reasoning"}.'
     }
 ];
@@ -70,7 +77,7 @@ const getQuickResponseFromAllModels = async (userQuestion) => {
                             role: 'user',
                             content: userQuestion
                         }],
-                        model: modelConfig.name,
+                        model: modelConfig.actualModel || modelConfig.name,
                         max_tokens: 1000,
                         temperature: 0.2,
                         response_format: { type: "json_object" }
@@ -146,7 +153,7 @@ const getResponseFromModel = async (model, userQuestion, maxTokens = 4000) => {
                     role: 'user',
                     content: userQuestion
                 }],
-                model,
+                model: config.actualModel || model,
                 max_tokens: maxTokens,
                 temperature: 0.2,
                 response_format: { type: "json_object" }
@@ -222,7 +229,7 @@ const getConsensusAnswer = async (userQuestion, responses) => {
                     role: 'user',
                     content: consensusPrompt
                 }],
-                model: config.name,
+                model: config.actualModel || config.name,
                 max_tokens: 1000,
                 temperature: 0.1,
                 response_format: { type: "json_object" }

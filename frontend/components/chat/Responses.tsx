@@ -21,6 +21,7 @@ const modelGlows: Record<string, string> = {
     'Meta': 'border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.05)]',
     'Alibaba': 'border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.05)]',
     'OpenAI': 'border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.05)]',
+    'SDAIA': 'border-teal-500/20 shadow-[0_0_15px_rgba(20,184,166,0.05)]',
     'Moonshot AI': 'border-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.05)]',
     'Groq': 'border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.05)]',
 };

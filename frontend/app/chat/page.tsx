@@ -59,19 +59,19 @@ export default function Chat() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const availableModels = [
-        'llama-3.1-8b-instant',
-        'qwen/qwen3-32b',
+        'openai/gpt-oss-120b',
+        'llama-3.3-70b-versatile',
+        'qwen/qwen3.8-27b',
         'groq/compound-mini',
-        'openai/gpt-oss-20b',
-        'openai/gpt-oss-120b'
+        'moonshotai/kimi-k2-instruct'
     ];
 
     const modelBrands: Record<string, string> = {
-        'llama-3.1-8b-instant': 'Meta',
-        'qwen/qwen3-32b': 'Alibaba',
+        'openai/gpt-oss-120b': 'OpenAI',
+        'llama-3.3-70b-versatile': 'Meta',
+        'qwen/qwen3.8-27b': 'Alibaba',
         'groq/compound-mini': 'Groq',
-        'openai/gpt-oss-20b': 'OpenAI',
-        'openai/gpt-oss-120b': 'OpenAI'
+        'moonshotai/kimi-k2-instruct': 'Moonshot AI'
     };
 
     const scrollToBottom = () => {

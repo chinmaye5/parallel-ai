@@ -43,11 +43,11 @@ Built on the **Groq LPU™ Inference Engine**, delivering near-instantaneous res
 | **Security** | JSON Web Tokens (JWT), Bcrypt.js |
 
 ### 🤖 Orchestrated Models
-- `llama-3.1-8b-instant`
-- `qwen/qwen3-32b`
-- `groq/compound-mini`
-- `openai/gpt-oss-20b`
-- `moonshotai/kimi-k2-instruct-0905`
+- `openai/gpt-oss-120b` (Consensus Judge & Model - OpenAI)
+- `llama-3.3-70b-versatile` (Meta)
+- `qwen/qwen3.8-27b` (Alibaba)
+- `groq/compound-mini` (Groq)
+- `moonshotai/kimi-k2-instruct` (Moonshot AI)
 
 ---
 
