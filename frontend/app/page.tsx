@@ -1,27 +1,26 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
-import { Twitter, Github, Linkedin, Brain, Zap, Clock, Shield, BarChart3, Rocket, ChevronRight, Menu, X, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Twitter, Github, Linkedin, Brain, Zap, Shield, BarChart3, Rocket, ArrowRight, Menu, X, Scale } from 'lucide-react';
 
 const LandingPage = () => {
   const [typedText, setTypedText] = useState('');
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const phrases = [
-    "5 FLAGSHIP MODELS. ONE INTERFACE.",
-    "ELIMINATE HALLUCINATIONS.",
-    "PARALLEL INTELLIGENCE ARCHITECTURE.",
-    "DISCOVER TRUTH THROUGH CONSENSUS.",
+    "5 ACTIVE LLMS // ZERO BIAS.",
+    "REAL-TIME PARALLEL ARBITRATION.",
+    "ALGORITHMIC CONSENSUS OVER HYPE.",
+    "ELIMINATE SINGLE-MODEL BLINDSPOTS.",
   ];
 
   useEffect(() => {
     const currentPhrase = phrases[currentPhraseIndex];
-    const typingSpeed = isDeleting ? 40 : 80;
+    const typingSpeed = isDeleting ? 30 : 60;
 
     if (!isDeleting && typedText === currentPhrase) {
-      setTimeout(() => setIsDeleting(true), 2500);
+      setTimeout(() => setIsDeleting(true), 2000);
       return;
     }
 
@@ -42,277 +41,296 @@ const LandingPage = () => {
     return () => clearTimeout(timeout);
   }, [typedText, isDeleting, currentPhraseIndex]);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const features = [
     {
-      icon: <Brain className="w-6 h-6 text-blue-400" />,
-      title: "COLLECTIVE BRAIN",
-      description: "Query Llama, Qwen, Groq, and more simultaneously for comprehensive perspective."
+      code: "01 // PARALLEL-EXEC",
+      title: "MULTI-THREAD INFERENCE",
+      description: "Dispatch identical user queries concurrently across 5 disparate foundational architectures in <800ms.",
+      color: "bg-violet-400"
     },
     {
-      icon: <Shield className="w-6 h-6 text-cyan-400" />,
-      title: "HALLUCINATION SHIELD",
-      description: "Cross-reference responses to filter out inaccuracies and synthetic errors automatically."
+      code: "02 // ARBITRATION",
+      title: "120B CONSENSUS JUDGE",
+      description: "OpenAI GPT-OSS-120B synthesizes all 5 streams into an unambiguous, factually consolidated decision.",
+      color: "bg-cyan-400"
     },
     {
-      icon: <Zap className="w-6 h-6 text-blue-400" />,
-      title: "ULTRA PARALLEL",
-      description: "Proprietary architecture delivers 5 model responses in the time it takes for one."
+      code: "03 // DIVERGENCE",
+      title: "HALLUCINATION ISOLATION",
+      description: "Single-model false positives are immediately exposed and neutralized by divergent source perspectives.",
+      color: "bg-lime-400"
     },
     {
-      icon: <Sparkles className="w-6 h-6 text-indigo-400" />,
-      title: "CONSENSUS ENGINE",
-      description: "Our algorithm identifies the majority view to find the most probable truth."
+      code: "04 // TELEMETRY",
+      title: "LATENCY & METRICS HUD",
+      description: "Per-node millisecond benchmarks and response time analysis for complete transparency.",
+      color: "bg-orange-400"
     },
     {
-      icon: <BarChart3 className="w-6 h-6 text-blue-400" />,
-      title: "ANALYTIC DEPTH",
-      description: "Compare nuances in model logic to gain a deeper understanding of complex topics."
+      code: "05 // INDEPENDENCE",
+      title: "MULTI-KEY RATE CONTROL",
+      description: "Segregated API keys for independent throughput quotas, eliminating cross-model blocking.",
+      color: "bg-purple-400"
     },
     {
-      icon: <Rocket className="w-6 h-6 text-cyan-400" />,
-      title: "API INTEGRATION",
-      description: "Deploy collective intelligence directly into your own applications and workflows."
+      code: "06 // DISPATCH",
+      title: "SINGLE & AGGREGATE MODES",
+      description: "Target isolated single architectures or dispatch collective 5-way batch runs with a single toggle.",
+      color: "bg-rose-400"
     }
   ];
 
   const models = [
-    { name: "Llama 3.1", brand: "Meta", logo: "/models/meta.png" },
-    { name: "Qwen 3", brand: "Alibaba", logo: "/models/Qwen_logo.svg.png" },
-    { name: "Compound", brand: "Groq", logo: "/models/groq.png" },
-    { name: "GPT-OSS", brand: "OpenAI", logo: "/models/openai.png" },
-    { name: "Kimi-K2", brand: "Moonshot AI", logo: "/models/kimi-ai-logo.webp" }
+    { name: "GPT-OSS-120B", brand: "OpenAI", role: "Consensus Judge", badge: "bg-emerald-400" },
+    { name: "Llama-3.3-70B", brand: "Meta", role: "Primary Node", badge: "bg-blue-400" },
+    { name: "Qwen-3.8-27B", brand: "Alibaba", role: "Primary Node", badge: "bg-amber-400" },
+    { name: "Compound-Mini", brand: "Groq", role: "Speed Node", badge: "bg-purple-400" },
+    { name: "Kimi-K2", brand: "Moonshot AI", role: "Reasoning Node", badge: "bg-rose-400" }
   ];
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-blue-500/30">
-      {/* Background Atmosphere */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px]"></div>
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
-          }}
-        ></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e11] text-[#f4f4f0] font-mono selection:bg-violet-400 selection:text-black">
+
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/[0.03]">
-        <div className="max-w-7xl mx-auto px-6 h-16 lg:h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3 group cursor-pointer">
-            <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:scale-110 transition-transform">
-              <Brain className="w-5 h-5 text-white" />
+      <nav className="border-b-2 border-black bg-[#121217] sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 bg-violet-400 text-black border-2 border-black flex items-center justify-center font-black text-base brutal-shadow-sm">
+              P
             </div>
-            <span className="text-sm font-black text-white uppercase tracking-widest">
-              Parallel<span className="text-blue-500">AI</span>
+            <span className="text-base font-black text-white uppercase tracking-tight">
+              PARALLEL<span className="bg-violet-400 text-black px-1.5 ml-1">AI</span>
             </span>
           </div>
 
-          <div className="hidden md:flex items-center space-x-10">
-            {['Features', 'Models', 'Network'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-[10px] font-black text-gray-500 hover:text-white uppercase tracking-[0.2em] transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+          <div className="hidden md:flex items-center space-x-8 text-xs font-bold uppercase tracking-wider">
+            <a href="#architecture" className="text-gray-400 hover:text-violet-400 transition-colors">
+              // ARCHITECTURE
+            </a>
+            <a href="#nodes" className="text-gray-400 hover:text-violet-400 transition-colors">
+              // ACTIVE_NODES
+            </a>
+            <a href="#specs" className="text-gray-400 hover:text-violet-400 transition-colors">
+              // SPECS
+            </a>
             <a
               href="/chat"
-              className="px-6 py-2.5 rounded-xl bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105"
+              className="px-4 py-2 bg-violet-400 text-black border-2 border-black font-black uppercase tracking-widest brutal-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
             >
-              Launch Interface
+              LAUNCH CONSOLE -&gt;
             </a>
           </div>
 
-          <button className="md:hidden p-2 text-gray-400" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <button className="md:hidden p-2 text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
+
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t-2 border-black bg-[#121217] p-4 space-y-3 text-xs font-bold uppercase">
+            <a href="#architecture" className="block text-gray-400 hover:text-violet-400 py-1" onClick={() => setIsMobileMenuOpen(false)}>// ARCHITECTURE</a>
+            <a href="#nodes" className="block text-gray-400 hover:text-violet-400 py-1" onClick={() => setIsMobileMenuOpen(false)}>// ACTIVE_NODES</a>
+            <a href="#specs" className="block text-gray-400 hover:text-violet-400 py-1" onClick={() => setIsMobileMenuOpen(false)}>// SPECS</a>
+            <a href="/chat" className="block w-full py-2.5 bg-violet-400 text-black text-center border-2 border-black font-black" onClick={() => setIsMobileMenuOpen(false)}>LAUNCH CONSOLE</a>
+          </div>
+        )}
       </nav>
 
-      <main className="relative z-10">
+      <main>
         {/* Hero Section */}
-        <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-20">
-          <div className="max-w-4xl mx-auto text-center space-y-12">
-            <div className="inline-block p-4 rounded-[2.5rem] bg-gradient-to-br from-blue-600 to-indigo-700 shadow-2xl shadow-blue-600/40 mb-4 animate-bounce-slow">
-              <Brain className="w-10 h-10 lg:w-14 lg:h-14 text-white" />
+        <section className="px-4 lg:px-6 pt-16 pb-20 border-b-2 border-black bg-[#0e0e11]">
+          <div className="max-w-6xl mx-auto space-y-8">
+            <div className="inline-block px-3 py-1 bg-[#181822] border-2 border-black text-violet-400 text-xs font-black uppercase tracking-widest brutal-shadow-sm">
+              ENGINEERED PROTOCOL // MULTI-LLM VERDICT
             </div>
 
-            <div className="space-y-6">
-              <h1 className="text-5xl lg:text-8xl font-black text-white tracking-tighter leading-tight lg:leading-none">
-                COLLECTIVE <br />
-                <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 bg-clip-text text-transparent uppercase">Intelligence</span>
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white font-sans uppercase tracking-tight leading-[0.95]">
+                DISPATCH ONCE. <br />
+                <span className="bg-violet-400 text-black px-3 py-1 inline-block mt-1">QUERY 5 ARCHITECTURES.</span>
               </h1>
 
-              <div className="h-8">
-                <p className="text-xs lg:text-sm font-black text-blue-500 uppercase tracking-[0.4em]">
-                  {typedText}<span className="animate-pulse">_</span>
+              <div className="h-6">
+                <p className="text-xs sm:text-sm font-black text-cyan-400 uppercase tracking-widest">
+                  &gt; {typedText}<span className="animate-pulse">_</span>
                 </p>
               </div>
 
-              <p className="text-sm lg:text-lg text-gray-500 max-w-xl mx-auto font-medium leading-relaxed uppercase tracking-widest">
-                A high-performance interface for parallel neural processing across world-leading LLMs.
+              <p className="text-sm lg:text-base text-gray-400 max-w-2xl font-sans leading-relaxed pt-2">
+                ParallelAI eliminates single-model hallucination by running queries simultaneously across OpenAI, Meta Llama, Alibaba Qwen, Groq, and Moonshot AI, feeding all raw telemetry into a 120B parameter consensus engine.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
               <a
                 href="/chat"
-                className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-blue-600 text-white text-xs font-black uppercase tracking-widest hover:bg-blue-500 shadow-xl shadow-blue-600/20 transition-all transform hover:scale-105 hover:-translate-y-1 flex items-center justify-center space-x-3"
+                className="px-8 py-3.5 bg-violet-400 hover:bg-violet-300 text-black border-2 border-black font-black text-xs uppercase tracking-widest brutal-shadow hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-center"
               >
-                <span>Initialize Session</span>
-                <Zap className="w-4 h-4" />
+                [ENTER CONSOLE INTERFACE]
               </a>
               <a
-                href="#features"
-                className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center"
+                href="#nodes"
+                className="px-8 py-3.5 bg-[#1a1a24] hover:bg-[#232330] text-gray-300 border-2 border-black font-black text-xs uppercase tracking-widest text-center"
               >
-                Core Architecture
+                VIEW NODE LINEUP
               </a>
             </div>
+
+            {/* Live Terminal Preview */}
+            <div className="mt-12 border-2 border-black bg-[#121217] brutal-shadow-lg">
+              <div className="flex items-center justify-between px-4 py-2 bg-[#1c1c24] border-b-2 border-black text-xs font-bold text-gray-400 uppercase">
+                <div className="flex items-center space-x-2">
+                  <span className="w-2.5 h-2.5 bg-rose-500 border border-black inline-block"></span>
+                  <span className="w-2.5 h-2.5 bg-violet-400 border border-black inline-block"></span>
+                  <span className="w-2.5 h-2.5 bg-emerald-400 border border-black inline-block"></span>
+                  <span className="ml-2 font-mono text-[10px] text-gray-400">TELEMETRY_PIPELINE.SH</span>
+                </div>
+                <span className="text-[10px] text-emerald-400">STATUS: 5/5 ONLINE</span>
+              </div>
+              <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-5 gap-3 font-mono text-xs">
+                {models.map((m, idx) => (
+                  <div key={idx} className="p-3 bg-black border-2 border-black brutal-shadow-sm space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-gray-500 font-bold">NODE-0{idx + 1}</span>
+                      <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${m.badge} text-black border border-black`}>
+                        {m.brand}
+                      </span>
+                    </div>
+                    <p className="text-white font-bold text-xs truncate">{m.name}</p>
+                    <p className="text-[10px] text-gray-400 font-sans">{m.role}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Models Grid */}
-        <section id="models" className="py-32 px-6 border-y border-white/[0.03] bg-white/[0.01]">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-20 text-center space-y-4">
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-1 h-1 rounded-full bg-blue-500 animate-pulse"></div>
-                <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em]">Neural Network Nodes</span>
-              </div>
-              <h2 className="text-3xl lg:text-5xl font-black text-white tracking-tighter uppercase">Integrated Models</h2>
+        {/* Models Grid Section */}
+        <section id="nodes" className="py-20 px-4 lg:px-6 border-b-2 border-black bg-[#121217]">
+          <div className="max-w-6xl mx-auto space-y-8">
+            <div className="space-y-1">
+              <span className="text-xs font-black text-violet-400 uppercase tracking-widest">[ORCHESTRATED INVENTORY]</span>
+              <h2 className="text-3xl lg:text-5xl font-black text-white font-sans uppercase tracking-tight">
+                5 ACTIVE NEURAL FOUNDATIONS
+              </h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-8">
-              {models.map((model, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {models.map((model, idx) => (
                 <div
-                  key={index}
-                  className="group p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-blue-500/30 transition-all duration-500 text-center space-y-6"
+                  key={idx}
+                  className="p-5 bg-[#171720] border-2 border-black brutal-shadow space-y-4"
                 >
-                  <div className="w-16 h-16 mx-auto rounded-2xl bg-black flex items-center justify-center border border-white/5 group-hover:scale-110 transition-transform">
-                    <img
-                      src={model.logo}
-                      alt={model.name}
-                      className="w-10 h-10 object-contain brightness-90 group-hover:brightness-110"
-                      onError={(e) => {
-                        (e.target as any).style.display = 'none';
-                      }}
-                    />
+                  <div className="flex items-center justify-between border-b-2 border-black pb-2">
+                    <span className="text-xs font-black text-gray-500 font-mono">NODE // 0{idx + 1}</span>
+                    <span className={`px-2 py-0.5 text-[9px] font-black uppercase ${model.badge} text-black border border-black`}>
+                      {model.brand}
+                    </span>
                   </div>
                   <div>
-                    <h3 className="text-xs font-black text-white uppercase tracking-widest">{model.name}</h3>
-                    <p className="text-[10px] font-bold text-gray-600 uppercase mt-1 transition-colors group-hover:text-blue-400">{model.brand}</p>
+                    <h3 className="text-lg font-black text-white font-sans uppercase">{model.name}</h3>
+                    <p className="text-xs text-gray-400 mt-1 font-mono uppercase">{model.role}</p>
+                  </div>
+                  <div className="text-[10px] text-gray-500 border-t border-[#262633] pt-2 flex justify-between font-mono">
+                    <span>MODE: CHAT_JSON</span>
+                    <span className="text-emerald-400">STANDBY_READY</span>
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Features Bento */}
-        <section id="features" className="py-32 px-6 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-20 space-y-4">
-              <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em]">Capabilities</span>
-              <h2 className="text-3xl lg:text-6xl font-black text-white tracking-tighter uppercase">Engineered for Accuracy</h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="p-10 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all group"
-                >
-                  <div className="mb-8 p-3 rounded-2xl bg-white/[0.03] border border-white/5 inline-block group-hover:scale-110 transition-transform">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-lg font-black text-white uppercase tracking-widest mb-4">{feature.title}</h3>
-                  <p className="text-sm text-gray-500 font-medium leading-relaxed tracking-wide">{feature.description}</p>
+              <div className="p-5 bg-violet-400 text-black border-2 border-black brutal-shadow flex flex-col justify-between">
+                <div className="space-y-2">
+                  <span className="text-xs font-black font-mono uppercase">[CONSENSUS MATRIX]</span>
+                  <h3 className="text-xl font-black font-sans uppercase">SUPER-MAJORITY ENGINE</h3>
+                  <p className="text-xs font-sans leading-relaxed">
+                    Answers are clustered, cross-referenced, and synthesized by GPT-OSS-120B to discard outliers.
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-32 px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="relative p-12 lg:p-24 rounded-[3rem] bg-gradient-to-br from-blue-900/20 to-indigo-900/20 border border-blue-500/20 text-center overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent)] pointer-events-none"></div>
-
-              <div className="relative z-10 space-y-10">
-                <h2 className="text-3xl lg:text-5xl font-black text-white tracking-tighter uppercase">Switch to Parallel<br />Intelligence</h2>
-                <p className="text-gray-400 max-w-xl mx-auto text-sm lg:text-base font-medium uppercase tracking-widest leading-loose">
-                  Join the elite users leveraging the power of collective AI for research, coding, and strategic planning.
-                </p>
-                <a
-                  href="/chat"
-                  className="inline-flex items-center space-x-4 px-12 py-5 rounded-2xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105"
-                >
-                  <span>Enter Interface</span>
-                  <ChevronRight className="w-4 h-4" />
+                <a href="/chat" className="mt-4 inline-block text-xs font-black uppercase underline">
+                  TEST IN ENGINE -&gt;
                 </a>
               </div>
             </div>
           </div>
         </section>
+
+        {/* Features Grid Section */}
+        <section id="architecture" className="py-20 px-4 lg:px-6 border-b-2 border-black bg-[#0e0e11]">
+          <div className="max-w-6xl mx-auto space-y-8">
+            <div className="space-y-1">
+              <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">[SYSTEM CAPABILITIES]</span>
+              <h2 className="text-3xl lg:text-5xl font-black text-white font-sans uppercase tracking-tight">
+                ZERO COMPROMISE ARCHITECTURE
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="p-6 bg-[#141419] border-2 border-black brutal-shadow space-y-3"
+                >
+                  <span className="text-[10px] font-black text-violet-400 tracking-wider block font-mono">
+                    {feature.code}
+                  </span>
+                  <h3 className="text-base font-black text-white font-sans uppercase tracking-tight">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs text-gray-400 font-sans leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Terminal Banner */}
+        <section className="py-20 px-4 lg:px-6 bg-[#121217]">
+          <div className="max-w-4xl mx-auto border-2 border-black bg-violet-400 text-black p-8 sm:p-12 brutal-shadow-lg text-center space-y-6">
+            <div className="space-y-2">
+              <span className="text-xs font-black uppercase tracking-widest font-mono">[READY FOR DEPLOYMENT]</span>
+              <h2 className="text-3xl sm:text-5xl font-black font-sans uppercase tracking-tight">
+                HARNESS COLLECTIVE AI INTELLIGENCE
+              </h2>
+              <p className="text-xs sm:text-sm font-sans max-w-xl mx-auto font-bold leading-relaxed">
+                Stop guessing which LLM gives the right answer. Query 5 flagship models side-by-side and read verified consensus now.
+              </p>
+            </div>
+            <div>
+              <a
+                href="/chat"
+                className="inline-block px-10 py-4 bg-black text-violet-400 hover:bg-neutral-900 border-2 border-black font-black text-xs uppercase tracking-widest brutal-shadow transition-transform hover:scale-105"
+              >
+                OPEN CONSOLE NOW -&gt;
+              </a>
+            </div>
+          </div>
+        </section>
       </main>
 
-      <footer className="py-20 px-6 border-t border-white/[0.03] bg-black">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
-          <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center">
-              <Brain className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-xs font-black text-white uppercase tracking-widest">ParallelAI</span>
+      {/* Industrial Footer */}
+      <footer className="border-t-2 border-black bg-[#0a0a0d] py-10 px-4 lg:px-6 font-mono text-xs text-gray-500">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center space-x-2 text-white font-black">
+            <div className="w-5 h-5 bg-violet-400 text-black border border-black flex items-center justify-center text-[10px]">P</div>
+            <span>PARALLELAI PROTOCOL</span>
           </div>
 
-          <div className="flex space-x-8">
-            <Twitter className="w-5 h-5 text-gray-600 hover:text-blue-400 cursor-pointer transition-colors" />
-            <Github className="w-5 h-5 text-gray-600 hover:text-white cursor-pointer transition-colors" />
-            <Linkedin className="w-5 h-5 text-gray-600 hover:text-blue-600 cursor-pointer transition-colors" />
+          <div className="flex space-x-6">
+            <a href="https://github.com/chinmaye5/parallel-ai" target="_blank" rel="noopener noreferrer" className="hover:text-violet-400 transition-colors uppercase font-bold">
+              [GITHUB]
+            </a>
+            <span className="text-gray-700">|</span>
+            <span className="uppercase">5-WAY GROQ SDK ORCHESTRATOR</span>
           </div>
 
-          <p className="text-[10px] font-black text-gray-700 uppercase tracking-widest">
-            © 2026 Parallel Intelligence Protocol
+          <p className="text-[10px] uppercase text-gray-600">
+            © 2026 PARALLELAI // NEO-BRUTALIST ARCHITECTURE
           </p>
         </div>
       </footer>
-
-      <style jsx global>{`
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 4s ease-in-out infinite;
-        }
-        body {
-          scrollbar-width: thin;
-          scrollbar-color: #1f2937 transparent;
-        }
-        ::-webkit-scrollbar {
-          width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #1f2937;
-          border-radius: 20px;
-        }
-      `}</style>
     </div>
   );
 };

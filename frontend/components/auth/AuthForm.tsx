@@ -52,99 +52,98 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
     };
 
     return (
-        <div className="w-full max-w-[400px] mx-auto p-8 rounded-[2.5rem] bg-gray-950 border border-white/10 shadow-2xl relative overflow-hidden group">
-            {/* Ambient Background */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600/5 to-transparent pointer-events-none" />
-
-            <div className="relative z-10 space-y-8">
+        <div className="w-full max-w-[420px] mx-auto p-6 bg-[#131317] border-2 border-black brutal-shadow-lg font-mono relative">
+            <div className="space-y-6">
                 {/* Header */}
-                <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:scale-110 transition-transform duration-500">
-                        <Brain className="w-7 h-7 text-white" />
+                <div className="flex flex-col items-center text-center space-y-2 border-b-2 border-black pb-4">
+                    <div className="w-10 h-10 bg-violet-400 text-black border-2 border-black flex items-center justify-center font-black">
+                        <Brain className="w-6 h-6" />
                     </div>
-                    <div className="space-y-1">
-                        <h2 className="text-xl font-black text-white uppercase tracking-widest">
-                            {isLogin ? 'Login' : 'Register'}
+                    <div className="space-y-0.5">
+                        <h2 className="text-base font-black text-white uppercase tracking-wider">
+                            PARALLEL<span className="bg-violet-400 text-black px-1.5 ml-1">AUTH</span>
                         </h2>
-                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
-                            Parallel Intelligence Interface
+                        <p className="text-[10px] text-gray-400 uppercase tracking-widest">
+                            ACCESS GATEWAY // LEVEL-0
                         </p>
                     </div>
                 </div>
 
                 {/* Mode Selector */}
-                <div className="flex p-1 bg-white/[0.03] border border-white/5 rounded-2xl">
+                <div className="grid grid-cols-2 gap-2 bg-[#0c0c0f] p-1 border-2 border-black">
                     <button
                         onClick={() => setIsLogin(true)}
-                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${isLogin ? 'bg-white/10 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                        className={`py-2 text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                            isLogin ? 'bg-violet-400 text-black border border-black brutal-shadow-sm' : 'text-gray-400 hover:text-white'
+                        }`}
                     >
-                        Login
+                        SIGN IN
                     </button>
                     <button
                         onClick={() => setIsLogin(false)}
-                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${!isLogin ? 'bg-white/10 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                        className={`py-2 text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                            !isLogin ? 'bg-violet-400 text-black border border-black brutal-shadow-sm' : 'text-gray-400 hover:text-white'
+                        }`}
                     >
-                        Register
+                        REGISTER
                     </button>
                 </div>
 
                 {/* Error Box */}
                 {error && (
-                    <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 animate-shake">
-                        <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest text-center">
-                            {error}
-                        </p>
+                    <div className="p-2.5 bg-rose-500/20 border-2 border-rose-500 text-rose-300 font-mono text-xs font-bold uppercase tracking-wider">
+                        [!] {error}
                     </div>
                 )}
 
                 {/* Form */}
-                <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-5">
+                <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-4">
                     {!isLogin && (
-                        <div className="space-y-2">
-                            <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1">Identity Name</label>
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-wider block">IDENTITY_NAME</label>
                             <div className="relative">
-                                <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+                                <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                                 <input
                                     type="text"
-                                    placeholder="Enter your name"
+                                    placeholder="Operator Name"
                                     value={registerData.name}
                                     onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-white/[0.03] border border-white/5 rounded-2xl text-sm font-medium text-white placeholder-gray-700 focus:outline-none focus:border-blue-500/50 transition-all"
+                                    className="w-full pl-9 pr-3 py-2 bg-[#1b1b24] border-2 border-black text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-violet-400"
                                     required
                                 />
                             </div>
                         </div>
                     )}
 
-                    <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1">Network Email</label>
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-wider block">NETWORK_EMAIL</label>
                         <div className="relative">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                             <input
                                 type="email"
-                                placeholder="name@domain.com"
+                                placeholder="operator@domain.com"
                                 value={isLogin ? loginData.email : registerData.email}
                                 onChange={(e) => isLogin
                                     ? setLoginData({ ...loginData, email: e.target.value })
                                     : setRegisterData({ ...registerData, email: e.target.value })}
-                                className="w-full pl-11 pr-4 py-3.5 bg-white/[0.03] border border-white/5 rounded-2xl text-sm font-medium text-white placeholder-gray-700 focus:outline-none focus:border-blue-500/50 transition-all"
+                                className="w-full pl-9 pr-3 py-2 bg-[#1b1b24] border-2 border-black text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-violet-400"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1">Access Key</label>
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-wider block">ACCESS_KEY</label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                             <input
                                 type="password"
-                                placeholder="••••••••"
+                                placeholder="••••••••••••"
                                 value={isLogin ? loginData.password : registerData.password}
                                 onChange={(e) => isLogin
                                     ? setLoginData({ ...loginData, password: e.target.value })
                                     : setRegisterData({ ...registerData, password: e.target.value })}
-                                className="w-full pl-11 pr-4 py-3.5 bg-white/[0.03] border border-white/5 rounded-2xl text-sm font-medium text-white placeholder-gray-700 focus:outline-none focus:border-blue-500/50 transition-all"
+                                className="w-full pl-9 pr-3 py-2 bg-[#1b1b24] border-2 border-black text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-violet-400"
                                 required
                             />
                         </div>
@@ -153,35 +152,31 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full group/btn relative overflow-hidden py-4 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full py-3 bg-violet-400 hover:bg-violet-300 text-black border-2 border-black font-black text-xs uppercase tracking-widest brutal-shadow hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer disabled:opacity-50"
                     >
-                        <span className="relative z-10 flex items-center justify-center space-x-2">
+                        <span className="flex items-center justify-center space-x-2">
                             {isLoading ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <Loader2 className="w-4 h-4 animate-spin text-black" />
                             ) : (
                                 <>
-                                    <span>{isLogin ? 'Sign In' : 'Sign Up'}</span>
-                                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                                    <span>{isLogin ? 'AUTHENTICATE SESSION' : 'INITIALIZE CREDENTIALS'}</span>
+                                    <ArrowRight className="w-4 h-4" />
                                 </>
                             )}
                         </span>
                     </button>
 
                     {isLoading && (
-                        <div className="flex flex-col items-center space-y-2 animate-fadeIn">
-                            <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest text-center animate-pulse">
-                                Backend is turning on
-                            </p>
-                            <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest text-center">
-                                This might take up to 30-50 seconds
+                        <div className="p-2 border border-dashed border-violet-400 text-center">
+                            <p className="text-[10px] font-black text-violet-400 uppercase tracking-widest animate-pulse">
+                                COLD-START IN PROGRESS...
                             </p>
                         </div>
                     )}
-
                 </form>
 
-                <p className="text-center text-[9px] font-bold text-gray-600 uppercase tracking-widest">
-                    Authorized Access Only
+                <p className="text-center text-[9px] font-mono text-gray-500 uppercase tracking-widest">
+                    SECURE INFERENCE TUNNEL // PARALLELAI
                 </p>
             </div>
         </div>

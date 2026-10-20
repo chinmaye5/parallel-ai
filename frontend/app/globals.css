@@ -1,28 +1,73 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0e0e11;
+  --foreground: #f4f4f0;
+  --card-bg: #15151a;
+  --card-border: #2e2e38;
+  --brutal-yellow: #8b5cf6;
+  --brutal-cyan: #22d3ee;
+  --brutal-lime: #a3e635;
+  --brutal-orange: #fb923c;
+  --brutal-pink: #f472b6;
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Neo-Brutalist Hard Box Shadows */
+.brutal-shadow-sm {
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.brutal-shadow {
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.brutal-shadow-lg {
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.brutal-shadow-yellow {
+  box-shadow: 4px 4px 0px 0px #8b5cf6;
+}
+
+.brutal-shadow-cyan {
+  box-shadow: 4px 4px 0px 0px #22d3ee;
+}
+
+.brutal-shadow-lime {
+  box-shadow: 4px 4px 0px 0px #a3e635;
+}
+
+.brutal-btn {
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+  transition: all 0.1s ease-in-out;
+}
+
+.brutal-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #000000;
+}
+
+.brutal-card {
+  border: 2px solid #23232b;
+  box-shadow: 4px 4px 0px 0px #000000;
 }
 
 @layer utilities {
@@ -47,7 +92,7 @@ body {
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(6px);
     }
 
     to {
@@ -57,26 +102,6 @@ body {
   }
 
   .animate-fadeIn {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-
-  @keyframes shake {
-
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-
-    25% {
-      transform: translateX(-5px);
-    }
-
-    75% {
-      transform: translateX(5px);
-    }
-  }
-
-  .animate-shake {
-    animation: shake 0.5s ease-in-out infinite;
+    animation: fadeIn 0.25s ease-out forwards;
   }
 }

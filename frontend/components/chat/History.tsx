@@ -85,77 +85,77 @@ export default function History({ history, onLoadHistory, onDeleteHistory, compa
     if (compact) {
         // Sidebar compact view
         return (
-            <div className="space-y-1">
+            <div className="space-y-2 font-mono">
                 {/* Search */}
-                <div className="relative mb-3 px-1">
-                    <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
+                <div className="relative mb-2">
+                    <div className="absolute inset-y-0 left-2.5 flex items-center pointer-events-none">
                         <Search className="w-3.5 h-3.5 text-gray-500" />
                     </div>
                     <input
                         type="text"
-                        placeholder="Search chats..."
+                        placeholder="FILTER_SESSIONS..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-8 py-2 bg-gray-800/40 border border-gray-700/30 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30 transition-all"
+                        className="w-full pl-8 pr-7 py-1.5 bg-[#171720] border-2 border-black text-xs text-white placeholder-gray-500 focus:outline-none focus:border-violet-400 brutal-shadow-sm font-mono uppercase"
                     />
                     {searchQuery && (
                         <button
                             onClick={() => setSearchQuery('')}
-                            className="absolute inset-y-0 right-10 flex items-center"
+                            className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-white"
                         >
-                            <X className="w-3.5 h-3.5 text-gray-500 hover:text-gray-300" />
+                            <X className="w-3.5 h-3.5" />
                         </button>
                     )}
                 </div>
 
                 {history.length === 0 ? (
-                    <div className="text-center py-8 px-4">
-                        <MessageSquare className="w-8 h-8 text-gray-600 mx-auto mb-3" />
-                        <p className="text-xs text-gray-500">No conversations yet</p>
+                    <div className="text-center py-6 border border-dashed border-[#2e2e38] p-3">
+                        <MessageSquare className="w-6 h-6 text-gray-600 mx-auto mb-2" />
+                        <p className="text-[11px] text-gray-500 uppercase tracking-widest font-mono">NO LOGS RECORDED</p>
                     </div>
                 ) : filteredHistory.length === 0 ? (
-                    <div className="text-center py-6 px-4">
-                        <p className="text-xs text-gray-500">No matches found</p>
+                    <div className="text-center py-4 border border-dashed border-[#2e2e38] p-2">
+                        <p className="text-[11px] text-gray-500 uppercase font-mono">NO MATCHES</p>
                     </div>
                 ) : (
                     Object.entries(groupedHistory).map(([label, items]) => (
-                        <div key={label}>
-                            <div className="px-3 py-2">
-                                <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wider">{label}</span>
+                        <div key={label} className="space-y-1">
+                            <div className="px-1 pt-1 pb-0.5">
+                                <span className="text-[9px] font-black text-violet-400 uppercase tracking-wider block font-mono">[{label}]</span>
                             </div>
                             {items.map((item, index) => (
                                 <div key={item.id || `${label}-${index}`} className="relative group">
                                     <button
                                         onClick={() => onLoadHistory?.(item)}
-                                        className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-800/50 transition-all duration-150 pr-10"
+                                        className="w-full text-left p-2 bg-[#171720] hover:bg-[#20202c] border border-black hover:border-violet-400 transition-all pr-8 cursor-pointer"
                                     >
-                                        <div className="flex items-center space-x-2.5">
-                                            <div className="flex-shrink-0">
+                                        <div className="flex items-start space-x-2">
+                                            <div className="flex-shrink-0 mt-0.5">
                                                 {item.mode === 'multi' ? (
-                                                    <Layers className="w-3.5 h-3.5 text-gray-500 group-hover:text-blue-400 transition-colors" />
+                                                    <span className="px-1 py-0.2 text-[8px] bg-violet-400 text-black font-black uppercase">5X</span>
                                                 ) : (
-                                                    <Cpu className="w-3.5 h-3.5 text-gray-500 group-hover:text-blue-400 transition-colors" />
+                                                    <span className="px-1 py-0.2 text-[8px] bg-cyan-400 text-black font-black uppercase">1X</span>
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm text-gray-300 group-hover:text-white truncate transition-colors leading-snug">
+                                                <p className="text-xs text-gray-200 group-hover:text-white font-sans font-medium truncate leading-tight">
                                                     {item.question}
                                                 </p>
-                                                <p className="text-[11px] text-gray-600 mt-0.5">
-                                                    {format(new Date(item.createdAt), 'h:mm a')}
+                                                <p className="text-[9px] text-gray-500 mt-0.5 font-mono">
+                                                    {format(new Date(item.createdAt), 'HH:mm')}
                                                 </p>
                                             </div>
                                         </div>
                                     </button>
                                     <button
                                         onClick={(e) => handleDelete(e, item.id)}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-gray-600 hover:text-rose-400 hover:bg-rose-400/10 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                                        className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-black hover:bg-rose-400 border border-transparent hover:border-black opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
                                         title="Delete chat"
                                     >
                                         {deletingId === item.id ? (
-                                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                            <Loader2 className="w-3 h-3 animate-spin" />
                                         ) : (
-                                            <Trash2 className="w-3.5 h-3.5" />
+                                            <Trash2 className="w-3 h-3" />
                                         )}
                                     </button>
                                 </div>

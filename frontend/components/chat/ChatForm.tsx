@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, ChevronDown, Layers, Cpu, Sparkles, Command, X, RefreshCcw } from 'lucide-react';
+import { Send, Layers, Cpu, X, RefreshCcw } from 'lucide-react';
 
 interface ChatFormProps {
     onSubmit: (question: string, mode: 'multi' | 'single', selectedModel: string) => void;
@@ -56,90 +56,118 @@ export default function ChatForm({ onSubmit, availableModels, isLoading, modelBr
     };
 
     return (
-        <div className="relative w-full max-w-4xl mx-auto px-2 lg:px-4">
-            {/* Small Compact Model Picker */}
+        <div className="relative w-full max-w-4xl mx-auto px-2 lg:px-4 font-mono">
+            {/* Neo-Brutalist Mode & Model Drawer */}
             {showModelPicker && (
                 <div
                     ref={modelPickerRef}
-                    className="absolute bottom-full left-2 right-2 lg:left-4 lg:right-4 mb-3 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 animate-fadeIn"
+                    className="absolute bottom-full left-2 right-2 lg:left-4 lg:right-4 mb-3 bg-[#131317] border-2 border-black brutal-shadow-lg p-4 space-y-4 z-50 animate-fadeIn"
                 >
-                    <div className="p-4 lg:p-5 space-y-4 lg:space-y-5">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[9px] lg:text-[10px] font-black text-gray-500 uppercase tracking-widest">Configuration</span>
-                            <button onClick={() => setShowModelPicker(false)} className="text-gray-500 hover:text-white"><X className="w-4 h-4" /></button>
-                        </div>
-
-                        <div className="flex flex-row gap-2 lg:gap-3">
-                            <button
-                                onClick={() => setMode('multi')}
-                                className={`flex-1 flex items-center justify-center space-x-2 px-3 py-2.5 lg:py-3 rounded-xl transition-all border ${mode === 'multi' ? 'bg-blue-600/10 border-blue-500/40 text-blue-400' : 'bg-white/5 border-transparent text-gray-500'}`}
-                            >
-                                <Layers className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                                <span className="text-[10px] lg:text-xs font-bold uppercase tracking-tight">Consensus</span>
-                            </button>
-                            <button
-                                onClick={() => setMode('single')}
-                                className={`flex-1 flex items-center justify-center space-x-2 px-3 py-2.5 lg:py-3 rounded-xl transition-all border ${mode === 'single' ? 'bg-purple-600/10 border-purple-500/40 text-purple-400' : 'bg-white/5 border-transparent text-gray-500'}`}
-                            >
-                                <Cpu className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                                <span className="text-[10px] lg:text-xs font-bold uppercase tracking-tight">Isolated</span>
-                            </button>
-                        </div>
-
-                        {mode === 'single' && (
-                            <div className="space-y-1 max-h-48 overflow-y-auto pr-2 scrollbar-none">
-                                {availableModels.map((model) => (
-                                    <button
-                                        key={model}
-                                        onClick={() => setSelectedModel(model)}
-                                        className={`w-full flex items-center justify-between p-2 lg:p-2.5 rounded-lg text-[10px] lg:text-xs transition-all border ${selectedModel === model ? 'bg-white/5 border-white/10 text-white' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
-                                    >
-                                        <span className="font-bold truncate pr-4">{getShortModelName(model)}</span>
-                                        <span className="text-[8px] lg:text-[9px] text-gray-600 font-black uppercase flex-shrink-0">{modelBrands[model]}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                    <div className="flex items-center justify-between border-b-2 border-black pb-2">
+                        <span className="text-xs font-black text-violet-400 uppercase tracking-widest">[ORCHESTRATION CONFIG]</span>
+                        <button onClick={() => setShowModelPicker(false)} className="text-gray-400 hover:text-white cursor-pointer"><X className="w-4 h-4" /></button>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            onClick={() => setMode('multi')}
+                            className={`flex items-center justify-center space-x-2 py-2.5 px-3 border-2 border-black font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                                mode === 'multi' 
+                                    ? 'bg-violet-400 text-black brutal-shadow-sm' 
+                                    : 'bg-[#1e1e24] text-gray-400 hover:text-white'
+                            }`}
+                        >
+                            <Layers className="w-4 h-4" />
+                            <span>ALL 5 (CONSENSUS)</span>
+                        </button>
+                        <button
+                            onClick={() => setMode('single')}
+                            className={`flex items-center justify-center space-x-2 py-2.5 px-3 border-2 border-black font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                                mode === 'single' 
+                                    ? 'bg-cyan-400 text-black brutal-shadow-sm' 
+                                    : 'bg-[#1e1e24] text-gray-400 hover:text-white'
+                            }`}
+                        >
+                            <Cpu className="w-4 h-4" />
+                            <span>SINGLE MODEL</span>
+                        </button>
+                    </div>
+
+                    {mode === 'single' && (
+                        <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                            {availableModels.map((model) => (
+                                <button
+                                    key={model}
+                                    onClick={() => setSelectedModel(model)}
+                                    className={`w-full flex items-center justify-between p-2 border-2 border-black text-xs font-bold transition-all cursor-pointer ${
+                                        selectedModel === model 
+                                            ? 'bg-white text-black brutal-shadow-sm' 
+                                            : 'bg-[#181820] text-gray-400 hover:text-gray-200'
+                                    }`}
+                                >
+                                    <span className="truncate pr-2 font-mono">{getShortModelName(model)}</span>
+                                    <span className="text-[9px] uppercase px-1.5 py-0.5 bg-black text-violet-400 border border-black flex-shrink-0">
+                                        {modelBrands[model]}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
 
-            {/* Compact Bottom Input */}
-            <form onSubmit={handleSubmit} className="relative z-10 w-full group">
-                <div className="flex items-end bg-[#0f0f0f]/90 backdrop-blur-xl border border-white/10 p-1.5 lg:p-2 pl-4 rounded-2xl lg:rounded-[1.5rem] shadow-2xl focus-within:border-white/20 transition-all">
+            {/* Neo-Brutalist Input Bar */}
+            <form onSubmit={handleSubmit} className="relative z-10 w-full">
+                <div className="flex items-end bg-[#131318] border-2 border-black brutal-shadow-lg p-2 pl-4">
                     <textarea
                         ref={textareaRef}
-                        placeholder="Inquire..."
+                        placeholder={mode === 'multi' ? "Dispatch prompt to 5 parallel AI models..." : `Dispatch prompt to ${getShortModelName(selectedModel)}...`}
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="flex-1 bg-transparent text-white placeholder-gray-600 focus:outline-none resize-none py-2 lg:py-3 text-base lg:text-lg font-medium leading-[1.4] tracking-tight max-h-40 scrollbar-hide"
+                        className="flex-1 bg-transparent text-white placeholder-gray-500 focus:outline-none resize-none py-2 text-sm lg:text-base font-sans font-medium leading-[1.4] max-h-36 scrollbar-none"
                         rows={1}
                         disabled={isLoading}
                     />
 
-                    <div className="flex items-center space-x-1.5 lg:space-x-2 mb-1 mr-1">
+                    <div className="flex items-center space-x-2 ml-2 pb-0.5">
                         <button
                             type="button"
                             onClick={() => setShowModelPicker(!showModelPicker)}
-                            className={`p-2 lg:p-2.5 rounded-xl transition-all ${showModelPicker ? 'bg-blue-600/20 text-blue-400' : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'}`}
-                            title="Switch Mode"
+                            className={`flex items-center space-x-1 px-2.5 py-2 border-2 border-black font-extrabold text-[11px] uppercase transition-all cursor-pointer ${
+                                showModelPicker ? 'bg-violet-400 text-black' : 'bg-[#22222b] text-gray-300 hover:bg-[#2c2c38]'
+                            }`}
+                            title="Configuration"
                         >
-                            {mode === 'multi' ? <Layers className="w-5 h-5" /> : <Cpu className="w-5 h-5" />}
+                            {mode === 'multi' ? (
+                                <>
+                                    <Layers className="w-3.5 h-3.5" />
+                                    <span className="hidden sm:inline">5-WAY</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Cpu className="w-3.5 h-3.5" />
+                                    <span className="hidden sm:inline">1-WAY</span>
+                                </>
+                            )}
                         </button>
 
                         <button
                             type="submit"
                             disabled={isLoading || !question.trim()}
-                            className={`p-2 lg:p-2.5 rounded-xl transition-all ${isLoading || !question.trim()
-                                ? 'bg-white/5 text-gray-800 cursor-not-allowed'
-                                : 'bg-white text-black hover:scale-105 active:scale-95'
-                                }`}
+                            className={`flex items-center space-x-1.5 px-4 py-2 border-2 border-black font-extrabold text-xs uppercase transition-all ${
+                                isLoading || !question.trim()
+                                    ? 'bg-[#202028] text-gray-600 border-gray-700 cursor-not-allowed'
+                                    : 'bg-violet-400 hover:bg-violet-300 text-black brutal-shadow-sm cursor-pointer'
+                            }`}
                         >
                             {isLoading ? (
-                                <RefreshCcw className="w-5 h-5 animate-spin text-blue-600" />
+                                <RefreshCcw className="w-4 h-4 animate-spin text-black" />
                             ) : (
-                                <Send className="w-5 h-5" />
+                                <>
+                                    <span>RUN</span>
+                                    <Send className="w-3.5 h-3.5" />
+                                </>
                             )}
                         </button>
                     </div>
