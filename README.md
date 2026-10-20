@@ -43,7 +43,7 @@ Built on the **Groq LPU™ Inference Engine**, delivering near-instantaneous res
 | **Security** | JSON Web Tokens (JWT), Bcrypt.js |
 
 ### 🤖 Orchestrated Models
-- `openai/gpt-oss-120b` (Consensus Judge & Model - OpenAI)
+- `openai/gpt-oss-120b` (Consensus Judge — OpenAI)
 - `llama-3.3-70b-versatile` (Meta)
 - `qwen/qwen3.8-27b` (Alibaba)
 - `groq/compound-mini` (Groq)
@@ -100,7 +100,7 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/parallel-ai.git
+   git clone https://github.com/chinmaye5/parallel-ai.git
    cd parallel-ai
    ```
 
